@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 
 namespace VaxTrack_v1.Controllers;
+
 [Authorize]
 public class AdminController:Controller
 {

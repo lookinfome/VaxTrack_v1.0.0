@@ -31,15 +31,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                         <li>
-                            <form asp-action="Logout" asp-controller="Account" method="post">
-                                <button type="submit" class="btn btn-info">Logout</button>
-                                @Html.AntiForgeryToken()
-                            </form>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="UserProfile" asp-route-username="@User.Identity.Name">Profile</a>
+                            </li>
+
+                            @if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin" asp-route-username="@User.Identity.Name">Admin Dashboard</a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <form asp-action="Logout" asp-controller="Account" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-info">Logout</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

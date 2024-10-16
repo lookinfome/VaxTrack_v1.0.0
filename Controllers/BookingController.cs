@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using VaxTrack_v1.Models;
 using VaxTrack_v1.Services;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Eventing.Reader;
-using System.Diagnostics.Metrics;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace VaxTrack_v1.Controllers;
 
+[Authorize]
 public class BookingController:Controller
 {
     // Variables: profile and booking services
@@ -89,8 +84,6 @@ public class BookingController:Controller
                     {
                         // create new booking id
                         string _newBookingId = _bookingService.CreateNewBookingId(submittedDetails.Username);
-
-                        Console.WriteLine($"--------------{_newBookingId}---------------");
 
                         // save new booking details
                         bool isSlotBookingSuccess = _bookingService.SaveBookingDetails(submittedDetails, _newBookingId);
