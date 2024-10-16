@@ -1,0 +1,32 @@
+@model LoginDetailsModel
+
+
+<div class="container mt-5">
+    <h1>Login</h1>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(model => model.Username)
+            <span class="mx-2">@Html.TextBoxFor(model => model.Username)</span>
+            @Html.ValidationMessageFor(model => model.Username)
+        </div>
+        <br>
+        <div>
+            @Html.LabelFor(model => model.Password)
+            <span class="mx-2">@Html.PasswordFor(model => model.Password)</span>
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+        <br>
+        <div>
+            <input asp-for="RememberMe" />
+            <label asp-for="RememberMe">Remember me</label>
+        </div>
+        <button type="submit" class="btn btn-dark">Login</button>
+    }
+    <div class="mt-1">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Home</a>
+        <span class="mx-2">
+            Or new user? <a href="@Url.Action("Registration", "Account")">Register</a>.
+        </span>
+    </div>
+</div>

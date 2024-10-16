@@ -1,0 +1,44 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* user profile page */
+
+.user-details-table, .user-vaccination-details-table, .admin-booking-details-table, .admin-hospital-details {
+  border: 1px solid greenyellow;
+}
+
+.user-details-table th, .user-details-table td, 
+.user-vaccination-details-table th, .user-vaccination-details-table td, 
+.admin-booking-details-table th, .admin-booking-details-table td,
+.admin-hospital-details th, .admin-hospital-details td {
+  border: 1px solid green;
+  text-align: center;
+  padding: 10px;
+}
+
+.user-details-table th, 
+.user-vaccination-details-table th, 
+.admin-booking-details-table th,
+.admin-hospital-details th {
+  background-color: greenyellow;
+}

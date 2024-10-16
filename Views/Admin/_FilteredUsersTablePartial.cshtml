@@ -1,0 +1,22 @@
+@model IEnumerable<VaxTrack_v1.Models.AdminViewUserVaccinationDetails>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Username</td>
+        <td>@item.BookingId</td>
+        <td>@item.Dose1Date</td>
+        <td>@item.Dose2Date</td>
+        <td>@item.VaccinationStatus</td>
+        <td>
+            @if (item.VaccinationStatus == "Vaccinated")
+            {
+                <button class="btn btn-sm btn-success disabled">Approved</button>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-danger">Approve</button>
+            }
+        </td>
+    </tr>
+}

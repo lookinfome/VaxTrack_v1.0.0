@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\VaxTrack_v1.props" />
+</Project>

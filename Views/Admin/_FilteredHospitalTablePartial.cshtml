@@ -1,0 +1,10 @@
+@model IEnumerable<VaxTrack_v1.Models.HospitalDetailsModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.HospitalId</td>
+        <td>@item.HospitalName</td>
+        <td>@item.SlotsAvailable</td>
+    </tr>
+}

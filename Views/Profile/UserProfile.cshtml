@@ -1,0 +1,71 @@
+@model UserDetailsModel
+
+
+
+
+<div class="container mt-5">
+    
+    <div>
+        <h1>@Model.Name</h1> 
+        <h5 class="mt-5 mb-5">
+            Username: 
+            <b>@Model.Username</b>
+        </h5>
+    </div>
+
+    @* user details *@
+
+    <p><b><i><u>User Details</u></i></b></p>
+
+    <table class="user-details-table">
+        <thead>
+            <th>UID</th>
+            <th>DOB (YYYY-MM-DD)</th>
+            <th>Gender</th>
+            <th>Phone</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Uid</td>
+                <td>@Model.Birthdate.ToString("yyyy-MM-dd")</td>
+                <td>@Model.Gender</td>
+                <td>@Model.Phone</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br>
+
+    @* user vaccination details *@
+    <p><b><i><u>User Vaccination Details</u></i></b></p>
+    <table class="user-vaccination-details-table">
+        <thead>
+            <th>Vaccination Status</th>
+            <th>Dose 1 Date</th>
+            <th>Dose 2 Date</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@ViewData["VaccinationStatus"]</td>
+                <td>@ViewData["Dose1Date"]</td>
+                <td>@ViewData["Dose2Date"]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+
+    @* action buttons *@
+    <div class="mt-4">
+
+        @* button: go home *@
+        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Home</a>
+
+        @* button: book slot *@
+        @if(ViewBag.SlotBookButtonEnable)
+        {
+            <span class="mx-2"><a href="@Url.Action("SlotBook", "Booking", new {username = Model.Username})" class="btn btn-info">Book Slot</a></span>
+        }
+    </div>
+
+</div>

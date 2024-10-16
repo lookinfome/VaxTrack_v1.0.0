@@ -1,0 +1,49 @@
+@model BookingFormModel
+
+@{
+    var lowerLimitd1 = DateTime.Now.ToString("yyyy-MM-dd");
+    var upperLimitd2 = DateTime.Now.AddYears(1).ToString("yyyy-MM-dd");
+}
+
+<div class="container mt-5">
+    <h1>Slot Book Page</h1>
+
+    <div class="mt-5">
+        @* form: new slot booking *@
+        @using(Html.BeginForm("SlotBook", "Booking", FormMethod.Post))
+        {
+            @* dose 1 *@
+            <div class="mt-2">
+                @Html.LabelFor(model => model.Dose1Date)
+                @Html.TextBoxFor(model => model.Dose1Date, new { type = "date", @class = "mx-2", min = lowerLimitd1, id = "Dose1Date" })
+                @Html.ValidationMessageFor(model => model.Dose1Date)
+            </div>
+
+            @* dose 2 *@
+            <div class="mt-2">
+                @Html.LabelFor(model => model.Dose2Date)
+                @Html.TextBoxFor(model => model.Dose2Date, new { type = "date", @class = "mx-2", max = upperLimitd2, id = "Dose2Date" })
+                @Html.ValidationMessageFor(model => model.Dose2Date)
+            </div>
+
+            @* submit *@
+            <input type="submit" value="Book Slot" class="btn btn-dark mt-4" />
+        }
+
+        @* action buttons *@
+        <div class="mt-1">
+            <a href="@Url.Action("UserProfile", "Profile", new {username = ViewBag.Username})" class="btn btn-secondary">Go Back</a>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('Dose1Date').addEventListener('change', function() {
+            var dose1Date = this.value;
+            var dose2DateInput = document.getElementById('Dose2Date');
+            dose2DateInput.min = dose1Date;
+        });
+    </script>
+}

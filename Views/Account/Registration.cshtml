@@ -1,0 +1,98 @@
+@model UserDetailsModel
+
+@{
+    var currMonthYear = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<div class="container mt-5">
+
+    <h1>Registration</h1>
+
+    @* registration form *@
+    @using(Html.BeginForm("Registration", "Account", FormMethod.Post))
+    {
+        @* Name *@
+        <div>
+            @Html.LabelFor(model => model.Name)
+            <span class="mx-2">@Html.TextBoxFor(model=> model.Name)</span>
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <br>
+
+        @* DOB *@
+        <div>
+            @Html.LabelFor(model => model.Birthdate)
+            <span class="mx-2">@Html.TextBoxFor(model => model.Birthdate, new {type="date", max = currMonthYear})</span>
+            @Html.ValidationMessageFor(model => model.Birthdate)
+        </div>
+
+        <br>
+
+        @* UID *@
+        <div>
+            @Html.LabelFor(model => model.Uid)
+            <span class="mx-2">@Html.TextBoxFor(model => model.Uid)</span>
+            @Html.ValidationMessageFor(model => model.Uid)
+        </div>
+
+        <br>
+
+        @* Gender *@
+        @Html.LabelFor(model => model.Gender)
+        <div>
+            <span>@Html.RadioButtonFor(model => model.Gender, "M") Male</span>
+            <span class="mx-2">@Html.RadioButtonFor(model => model.Gender, "F") Female</span>
+            <span class="mx-2">@Html.RadioButtonFor(model => model.Gender, "O") Other</span>
+
+        </div>
+        @Html.ValidationMessageFor(model => model.Gender)
+
+        <br>
+
+        @* Phone *@
+        <div>
+            @Html.LabelFor(model => model.Phone)
+            <span class="mx-2">@Html.TextBoxFor(model => model.Phone)</span>
+            @Html.ValidationMessageFor(model => model.Phone)
+        </div>
+
+        <br>
+        @* Role *@
+        @* <div>
+            @Html.LabelFor(model=>model.Role)
+            @Html.TextBoxFor(model=>model.Role, new {@class="mx-2"})
+            @Html.ValidationMessageFor(model=>model.Role)
+        </div> *@
+
+        <br>
+
+        @* Username *@
+        @* <div>
+            @Html.LabelFor(model => model.Username)
+            <span class="mx-2">@Html.TextBoxFor(model => model.Username)</span>
+            @Html.ValidationMessageFor(model => model.Username)
+        </div> *@
+
+        @* Password *@
+        <div>
+            @Html.LabelFor(model => model.Password)
+            <span class="mx-2">@Html.PasswordFor(model => model.Password)</span>
+            @Html.ValidationMessageFor(model => model.Password)
+        </div>
+
+        <br>
+
+        <input type="submit" class="btn btn-dark" value="Register" />
+    }
+
+
+    @* action buttons *@
+    <div class="mt-1">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Home</a>
+        <span class="mx-2">
+            Or already registered, <a href="@Url.Action("Login", "Account")">Sign In</a>.
+        </span>
+    </div>
+
+</div>
