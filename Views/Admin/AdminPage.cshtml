@@ -23,9 +23,10 @@
             </form>
 
             @* table *@
-            <table class="admin-booking-details-table mt-2">
+            <table class="admin-dashboard-pending-approval mt-2">
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Username</th>
                         <th>BookingID</th>
                         <th>Dose1Date</th>
@@ -40,6 +41,7 @@
                         @foreach (var record in ViewBag.AdminViewDetails)
                         {
                             <tr>
+                                <td>@record.Name</td>
                                 <td>@record.Username</td>
                                 <td>@record.BookingId</td>
                                 <td>@record.Dose1Date <br> (<b>@record.D1HospitalName</b>)</td>
@@ -71,7 +73,7 @@
         </div>
 
         @* hospital details with available slot count *@
-        <div class="mt-4 col col-lg-6">
+        <div class="mt-4 mx-2 col col-lg-4">
 
             @* heading *@
             <h5>
@@ -94,7 +96,7 @@
             </form>
 
             @* table *@
-            <table class="admin-hospital-details mt-2">
+            <table class="admin-dashboard-hospital-available-slots mt-2">
                 <thead>
                     <tr>
                         <th>Hospital ID</th>
@@ -117,13 +119,106 @@
 
     </div>
 
+    <hr class="mt-5">
+
     <div class="row">
 
-        @* user details yet to book slot *@
+        @* users yet to book slots *@
+        <div class="mt-4 col col-lg-6">
 
-        @* hospital details with completed vaccination count *@
+            @* head *@
+            <h5> Registered Users: Without Slots </h5>
+
+            @* table *@
+            <table class="admin-dashboard-user-without-slots mt-2">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var rec in ViewBag.UserListWithoutSlot)
+                    {
+                        <tr>
+                            <td>@rec.Username</td>
+                            <td>@rec.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
+
+    <hr class="mt-5">
+
+    <div class="row">
+
+        @* admin dashboard stats *@
+        <div class="mt-4 col col-lg-6">
+            @* heading *@
+            <h5> Portal Status </h5>
+
+            @* table *@
+            <table class="admin-dashboard-stats mt-2">
+                <thead>
+                    <tr>
+                        <th>Total Registered Users</th>
+                        <th>User completed vaccination (Dose 1 and Dose 2)</th>
+                        <th>User vaccination approval pending</th>
+                        <th>Registered user yet to book slots</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        @if(ViewBag.TotalUsersCount >0 )
+                        {
+                            <td>
+                                @ViewBag.TotalUsersCount
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.TotalVaccinationCount > 0)
+                        {
+                            <td> 
+                                @ViewBag.TotalVaccinationCount 
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.UserCountWithPendingApproval > 0)
+                        {
+                            <td> @ViewBag.UserCountWithPendingApproval </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.UsersCountWithNoBooking > 0)
+                        {
+                            <td> 
+                                @ViewBag.UsersCountWithNoBooking 
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <hr class="mt-5">
 
 
 

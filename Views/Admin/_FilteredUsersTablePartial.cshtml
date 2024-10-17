@@ -5,8 +5,8 @@
     <tr>
         <td>@item.Username</td>
         <td>@item.BookingId</td>
-        <td>@item.Dose1Date</td>
-        <td>@item.Dose2Date</td>
+        <td>@item.Dose1Date (<b>@item.D1HospitalName</b>)</td>
+        <td>@item.Dose2Date (<b>@item.D2HospitalName</b>)</td>
         <td>@item.VaccinationStatus</td>
         <td>
             @if (item.VaccinationStatus == "Vaccinated")

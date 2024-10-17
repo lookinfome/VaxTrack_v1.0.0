@@ -17,3 +17,4 @@ public class UserVaccinationDetailsModel
     [DataType(DataType.Date)]
     public DateTime? Dose2Date {get;set;} = DateTime.MinValue;
 }
+

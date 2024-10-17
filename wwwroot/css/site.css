@@ -23,22 +23,41 @@ body {
 
 /* user profile page */
 
-.user-details-table, .user-vaccination-details-table, .admin-booking-details-table, .admin-hospital-details {
-  border: 1px solid greenyellow;
-}
-
-.user-details-table th, .user-details-table td, 
-.user-vaccination-details-table th, .user-vaccination-details-table td, 
-.admin-booking-details-table th, .admin-booking-details-table td,
-.admin-hospital-details th, .admin-hospital-details td {
-  border: 1px solid green;
+.admin-dashboard-pending-approval th,
+.admin-dashboard-hospital-available-slots th{
+  background-color: yellow;
   text-align: center;
-  padding: 10px;
 }
 
-.user-details-table th, 
-.user-vaccination-details-table th, 
-.admin-booking-details-table th,
-.admin-hospital-details th {
-  background-color: greenyellow;
+.admin-dashboard-pending-approval th, 
+.admin-dashboard-pending-approval td,
+.admin-dashboard-hospital-available-slots th,
+.admin-dashboard-hospital-available-slots td{
+  border: 1px solid greenyellow;
+  text-align: center;
+  padding: 5px;
+}
+
+.admin-dashboard-stats th{
+  background-color: lightgray;
+  text-align: center;
+}
+
+.admin-dashboard-stats th, 
+.admin-dashboard-stats td{
+  border: 1px solid greenyellow;
+  text-align: center;
+  padding: 5px;
+}
+
+.admin-dashboard-user-without-slots th,
+.admin-dashboard-user-without-slots td{
+  border: 1px solid greenyellow;
+  text-align: center;
+  padding: 5px;
+}
+
+.admin-dashboard-user-without-slots th{
+  background-color: salmon;
+  text-align: center;
 }

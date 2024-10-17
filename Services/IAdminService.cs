@@ -10,6 +10,10 @@ namespace VaxTrack_v1.Services
         public List<AdminViewUserVaccinationDetails> FetchAdminViewUserVaccinationDetails();
         public List<AdminViewUserVaccinationDetails> FilterAdminViewUsersVaccinationDetails(string filter);
         public bool ApproveUserVaccination(string username, string bookingId);
+        public int FetchTotalVaccinationCompletedCount();
+        public int FetchTotalUserCount();
+        public int FetchUsersWithNoBooking();
+        public List<AdminViewUserWithoutBooking> FetchUsersWithoutBooking();
         public List<HospitalDetailsModel> FetchAdminViewHospitalDetails();
         public List<HospitalDetailsModel> FilterAdminViewHospitalDetails(string filter);
     }
@@ -42,6 +46,18 @@ namespace VaxTrack_v1.Services
 
                 if (_adminViewDetails != null)
                 {
+
+                    foreach(var rec in _adminViewDetails.ToList())
+                    {
+                        string _name = _vaxTrackDBContext.UserDetails.Where(record => record.Username == rec.Username).Select(record => record.Name).FirstOrDefault();
+
+                        if(!string.IsNullOrEmpty(_name))
+                        {
+                            rec.Name = _name;
+                        }
+
+                    }
+
                     return _adminViewDetails.ToList();
                 }
                 else
@@ -133,6 +149,60 @@ namespace VaxTrack_v1.Services
             }
         }
         
+        // method: fetch total vaccination completed count
+        public int FetchTotalVaccinationCompletedCount()
+        {
+            int _vaccinatedCount = _vaxTrackDBContext.UserVaccinationDetails
+                    .Where(record => record.VaccinationStatus == "Vaccinated")
+                    .Count();
+            
+            return _vaccinatedCount>0?_vaccinatedCount:0;
+
+        }
+
+        // method: fetch total registered users count yet to book slots
+        public int FetchUsersWithNoBooking()
+        {
+            int _usersCount = _vaxTrackDBContext.UserVaccinationDetails
+                                .GroupJoin(
+                                    _vaxTrackDBContext.BookingDetails,
+                                    user => user.Username,
+                                    booking => booking.Username,
+                                    (user, bookings) => new { user, bookings }
+                                )
+                                .Where(result => !result.bookings.Any())
+                                .Count();
+
+
+            return _usersCount >0?_usersCount:0;
+        }
+   
+        // method: fetch total user count
+        public int FetchTotalUserCount()
+        {
+            int _totalUserCount = _vaxTrackDBContext.UserVaccinationDetails.Count();
+
+            return _totalUserCount>0?_totalUserCount:0;
+        }
+
+        // method: fetch total user without slot book
+        public List<AdminViewUserWithoutBooking> FetchUsersWithoutBooking()
+        {
+            var _usersWithoutSlot = from user in _vaxTrackDBContext.UserVaccinationDetails
+                                    join details in _vaxTrackDBContext.UserDetails on user.Username equals details.Username
+                                    join booking in _vaxTrackDBContext.BookingDetails on user.Username equals booking.Username into bookings
+                                    from booking in bookings.DefaultIfEmpty()
+                                    where booking == null
+                                    select new AdminViewUserWithoutBooking
+                                    {
+                                        Username = user.Username,
+                                        Name = details.Name
+                                    };
+
+            return _usersWithoutSlot.ToList();
+        }
+
+
 
 
         // ===================================
@@ -166,7 +236,7 @@ namespace VaxTrack_v1.Services
             var _filteredHospitalDetails = _hospitalService.FilterHospitalDetails(filter);
             return _filteredHospitalDetails;
         }
-
+     
         // method: update hospital details
         private bool UpdateHospitalDetails(string hospitalName1, string hospitalName2)
         {
@@ -189,7 +259,7 @@ namespace VaxTrack_v1.Services
         
         }
 
-        
+    
 
     }
 }

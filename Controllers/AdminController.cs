@@ -38,7 +38,27 @@ public class AdminController:Controller
         // default hospital details
         List<HospitalDetailsModel> _adminHospitalDetails = _adminService.FetchAdminViewHospitalDetails();
         ViewBag.HospitalDetails = _adminHospitalDetails;
+
+        // total vaccination completed count
+        int _totalVaccinationCount = _adminService.FetchTotalVaccinationCompletedCount();
+        ViewBag.TotalVaccinationCount = _totalVaccinationCount;
+
+        // total registered users wit no slot booked
+        int _usersCountWithNoSlot = _adminService.FetchUsersWithNoBooking();
+        ViewBag.UsersCountWithNoBooking = _usersCountWithNoSlot;
         
+        // total registered users
+        int _totalUserCount = _adminService.FetchTotalUserCount();
+        ViewBag.TotalUsersCount = _totalUserCount;
+
+        // total registered users with pending approval
+        int _userCountWithPendingApproval = _totalUserCount - (_totalVaccinationCount+_usersCountWithNoSlot);
+        ViewBag.UserCountWithPendingApproval = _userCountWithPendingApproval;
+
+        //
+        List<AdminViewUserWithoutBooking> _userListWothoutSlot  = _adminService.FetchUsersWithoutBooking();
+        ViewBag.UserListWithoutSlot = _userListWothoutSlot;
+
         // return view
         return View();
     }
@@ -51,6 +71,7 @@ public class AdminController:Controller
             bool _approveSlotBooked = _adminService.ApproveUserVaccination(username, bookingId);
             if(_approveSlotBooked)
             {
+                // fetch updated details post approval
                 List<AdminViewUserVaccinationDetails> _adminViewDetails = _adminService.FetchAdminViewUserVaccinationDetails();
                 return PartialView("_FilteredUsersTablePartial", _adminViewDetails.ToList());
             }
