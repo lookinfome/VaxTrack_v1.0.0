@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace VaxTrack_v1.Services
 {
+    // interface: booking service | to serve as service and allowed as injectable
     public interface IBookingService
     {
         public BookingDetailsModel? FetchBookingDetails(string username);
@@ -15,22 +16,33 @@ namespace VaxTrack_v1.Services
         public bool IsSlotsAvailable();
         public bool SaveBookingDetails(BookingFormModel submittedDetails, string newBookingId);
         public List<BookingDetailsModel> FetchBookingDetails();
+        public int FetchUsersCountWithNoBooking();
+        public List<AdminViewUserWithoutBooking> FetchUsersDetailsWithNoBooking();
     }
 
+    // class: booking service | implementing service methods and handeling utility methods
     public class BookingService : IBookingService
     {
-        public AppDbContext _vaxTrackDBContext;
+        // variable: sqlite DB | to access DB tables
+        private readonly AppDbContext _vaxTrackDBContext;
 
+        // contructor: booking service | to initialize account service class variables
         public BookingService(AppDbContext vaxTrackDBContext)
         {
             this._vaxTrackDBContext = vaxTrackDBContext;
         }
 
-        // method: fetch booking details as list
+
+        /*
+        *   service method: FetchBookingDetails()
+        *   purpose: to fetch list of user's booking details
+        *   return: return list of user's booking details
+        */
         public List<BookingDetailsModel> FetchBookingDetails()
         {
             try
             {
+                // fetch user's booking details
                 var _userBookingDetails = _vaxTrackDBContext.BookingDetails.ToList();
                 if(_userBookingDetails != null)
                 {
@@ -46,11 +58,17 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: fetch booking details based on username
+        /*
+        *   service method: FetchBookingDetails()
+        *   purpose: to fetch user's booking details for particular user
+        *   parameter: username as string
+        *   return: return user's booking details for particular user
+        */
         public BookingDetailsModel FetchBookingDetails(string username)
         {
             try
             {
+                // fetch user's booking details
                 var _userBookingDetails = _vaxTrackDBContext.BookingDetails.FirstOrDefault(record=>record.Username == username);
                 if(_userBookingDetails != null)
                 {
@@ -66,7 +84,12 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: create new booking Id
+        /*
+        *   service method: CreateNewBookingId()
+        *   purpose: to create new booking id for username
+        *   parameter: username as string
+        *   return: return booking id as string
+        */
         public string CreateNewBookingId(string username)
         {
             Random _randomNumGenerator = new Random();
@@ -75,13 +98,19 @@ namespace VaxTrack_v1.Services
             return $"{username}_{_randomNum}";
         } 
 
-        // method: check slots availability
+        /*
+        *   service method: IsSlotsAvailable()
+        *   purpose: to check if slots available in listed hospital from hospital details table
+        *   return: return bool value, 1 if slots available, else 0
+        */
         public bool IsSlotsAvailable()
         {
             try
             {
+                // fetch two hospitals with 1 slot available
                 var _hospitalDetails2Slots_1 = _vaxTrackDBContext.HospitalDetails.Where(record => record.SlotsAvailable > 0).Take(2).ToList();
 
+                // fetch one hospital with 2 slots available
                 var _hospitalDetails2Slots_2 = _vaxTrackDBContext.HospitalDetails.Where(record => record.SlotsAvailable >= 2).FirstOrDefault();
 
                 if(_hospitalDetails2Slots_1.Count >= 2 || _hospitalDetails2Slots_2 != null)
@@ -98,20 +127,29 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: save new booking details
+        /*
+        *   service method: SaveBookingDetails()
+        *   purpose: to fetch save slot booking details (dose 1 date, dose 2 date) in booking details table
+        *   parameter: booking details model as object and booking id as string
+        *   return: return bool value, 1 for successfully saving the details, else 0
+        */
         public bool SaveBookingDetails(BookingFormModel submittedDetails, string newBookingId)
         {
             try
             {
+                // fetch two hospitals having 1 slots available
                 var _hospitalDetails2Slots_1 = _vaxTrackDBContext.HospitalDetails.Where(record => record.SlotsAvailable > 0).Take(2).ToList();
 
+                // fetch one hospital having 2 slots available
                 var _hospitalDetails2Slots_2 = _vaxTrackDBContext.HospitalDetails.Where(record => record.SlotsAvailable >= 2).FirstOrDefault();
 
+                // fetch user vaccination details for username
                 var _userVccinationDetails = _vaxTrackDBContext.UserVaccinationDetails.FirstOrDefault(record=>record.Username == submittedDetails.Username);
 
+                // check if one hospital with 2 slots available
                 if(_hospitalDetails2Slots_2 != null)
                 {
-                    // new booking details
+                    // create new booking details
                     BookingDetailsModel _bookingDetails = new BookingDetailsModel {
                         Username = submittedDetails.Username,
                         BookingId = newBookingId,
@@ -150,9 +188,11 @@ namespace VaxTrack_v1.Services
                     return true;
 
                 }
+
+                // else two hospitals with 1 slot
                 else if(_hospitalDetails2Slots_1 != null)
                 {
-                    // new booking details
+                    // create new booking details
                     BookingDetailsModel _bookingDetails = new BookingDetailsModel {
                         Username = submittedDetails.Username,
                         BookingId = newBookingId,
@@ -200,6 +240,52 @@ namespace VaxTrack_v1.Services
                 return false;
             }
         }
+
+
+        /*
+        *   service method: FetchUsersCountWithNoBooking()
+        *   purpose: to fetch total count of registered users without slot booking 
+        *   return: total count of registered users without slot booking
+        */
+        public int FetchUsersCountWithNoBooking()
+        {
+            // fetch total count of users without slot booking
+            int _usersCount = _vaxTrackDBContext.UserVaccinationDetails
+                                .GroupJoin(
+                                    _vaxTrackDBContext.BookingDetails,
+                                    user => user.Username,
+                                    booking => booking.Username,
+                                    (user, bookings) => new { user, bookings }
+                                )
+                                .Where(result => !result.bookings.Any())
+                                .Count();
+
+
+            return _usersCount >0?_usersCount:0;
+        }
+
+        /*
+        *   service method: FetchUsersDetailsWithNoBooking()
+        *   purpose: to fetch list of registered users without slot booking 
+        *   return: list of registered users without slot booking
+        */
+        public List<AdminViewUserWithoutBooking> FetchUsersDetailsWithNoBooking()
+        {
+            // fetch registered user details without any slots booked
+            var _usersWithoutSlot = from user in _vaxTrackDBContext.UserVaccinationDetails
+                                    join details in _vaxTrackDBContext.UserDetails on user.Username equals details.Username
+                                    join booking in _vaxTrackDBContext.BookingDetails on user.Username equals booking.Username into bookings
+                                    from booking in bookings.DefaultIfEmpty()
+                                    where booking == null
+                                    select new AdminViewUserWithoutBooking
+                                    {
+                                        Username = user.Username,
+                                        Name = details.Name
+                                    };
+
+            return _usersWithoutSlot.ToList();
+        }
+
 
     } 
 }

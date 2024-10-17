@@ -2,42 +2,51 @@ using Microsoft.AspNetCore.Mvc;
 using VaxTrack_v1.Models;
 using VaxTrack_v1.Services;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Eventing.Reader;
-using System.Diagnostics.Metrics;
-using System.Reflection;
-
 
 namespace VaxTrack_v1.Controllers;
 
+// class: account contoller | handle logic and registration requests
 public class AccountController:Controller
 {
-    //
+    // variable: sign-in manager | for authentication
     private readonly SignInManager<AppUserModel> _signInManager;
 
-    // vriable: account service
+    // vriable: account service | for accessing account service methods
     private readonly IAccountService _accountService;
 
-    // constructor: copy of in-house DB
+    // constructor: account controller | to initialize controller class variables
     public AccountController(IAccountService accountService, SignInManager<AppUserModel> signInManager)
     {
         _accountService = accountService;
         _signInManager = signInManager;
     }
 
-    // ===========
-    // login page
-    // ===========
 
-    // action method:  get login page
+    /*
+    *   action method: Login()
+    *   http request: GET
+    *   purpose: to get login form page
+    *   return: login form view
+    */
+
     [HttpGet("Account/Login")]
     public IActionResult Login()
     {
         return View();
     }
 
-    // action method: submit login page
+    // action method: submit login form
+
+    /*
+    *   action method: Login()
+    *   http request: POST
+    *   purpose: to submit login form
+    *   parameter: login detail model as object
+    *   return:
+    *       if login success, get profile page for user, or admin dashboard for admin 
+    *       if login failed, get back to login form
+    */
+
     [HttpPost("Account/Login")]
     public async Task<IActionResult> Login(LoginDetailsModel submittedDetails)
     {
@@ -53,15 +62,17 @@ public class AccountController:Controller
                     if (_accountService.IsUserAdmin(submittedDetails.Username))
                     {
                         // Allow admin login
+                        Console.WriteLine($"Login attempt success for admin - {submittedDetails.Username}");
                         return RedirectToAction("AdminPage", "Admin", new { username = submittedDetails.Username });
                     }
 
                     // Allow user login
+                    Console.WriteLine($"Login attempt success for user - {submittedDetails.Username}");
                     return RedirectToAction("UserProfile", "Profile", new { username = submittedDetails.Username });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    Console.WriteLine($"Invalid username/password for user {submittedDetails.Username}");
                     return View(submittedDetails);
                 }
 
@@ -80,18 +91,29 @@ public class AccountController:Controller
         }
     }
 
-    // =================
-    // registration page
-    // =================
+    /*
+    *   action method: Registration()
+    *   http request: GET
+    *   purpose: to get registration form page
+    *   return: registration form view
+    */
 
-    // action method: get registeration page
     [HttpGet("Account/Registration")]
     public IActionResult Registration()
     {
         return View();
     }
 
-    // action method: submit registraion page
+    /*
+    *   action method: Registration()
+    *   http request: POST
+    *   purpose: to submit registration form
+    *   parameter: user detail model as object
+    *   return:
+    *       if registration success, save new user details, as well default vaccination details for new user
+    *       if registratio failed, get back to registration page
+    */
+
     [HttpPost("Account/Registration")]
     public async Task<IActionResult> Registration(UserDetailsModel submittedDetails)
     {
@@ -99,20 +121,19 @@ public class AccountController:Controller
         {
             if (ModelState.IsValid)
             {
+                // save new user details
                 var _newUserLoginDetails = await _accountService.SaveNewUser(submittedDetails);
-
-
 
                 if (_newUserLoginDetails.Username != null)
                 {
-                    Console.WriteLine($"Login: If condition - {_newUserLoginDetails.Username}");
+                    Console.WriteLine($"Registation successfull for user - {_newUserLoginDetails.Username}");
 
                     // Redirect to Login action
                     return await Login(_newUserLoginDetails);
                 }
                 else
                 {
-                    Console.WriteLine("Invalid form inputs");
+                    Console.WriteLine("Invalid registration form inputs");
                     return View(submittedDetails);
                 }
             }
@@ -130,17 +151,21 @@ public class AccountController:Controller
         }
     }
 
+    /*
+    *   action method: Logout()
+    *   http request: POST
+    *   purpose: to logout user
+    *   return:
+    *       if logout success, redirect to home page
+    */
 
-    // =======
-    // logout
-    // =======
-
-    // action method: logout
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
+        // handling sign-out operation
         await _signInManager.SignOutAsync();
+
         return RedirectToAction("Index", "Home");
     }
 

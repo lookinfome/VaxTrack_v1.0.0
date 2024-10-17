@@ -6,14 +6,17 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace VaxTrack_v1.Controllers;
 
-[Authorize]
+// class: booking contoller | handle logic and slot booking requests
+
 public class BookingController:Controller
 {
-    // Variables: profile and booking services
+    // vriable: profile service | for accessing profile service methods
     private readonly IProfileService _profileService;
+
+    // vriable: booking service | for accessing booking service methods
     private readonly IBookingService _bookingService;
 
-    // Constructor: copy of in-house DB
+    // constructor: booking controller | to initialize controller class variables
     public BookingController(IProfileService profileService, IBookingService bookingService)
     {
         _profileService = profileService;
@@ -21,35 +24,38 @@ public class BookingController:Controller
     }
 
 
-    // get booking page
-
-    // action method: get slot booking form
+    /*
+    *   action method: SlotBook()
+    *   http request: GET
+    *   purpose: to get slot booking form for user
+    *   return: slot booking form view
+    *   authorization: required
+    */
+    [Authorize]
     [HttpGet("Account/UserProfile/{username}/SlotBook")]
     public IActionResult SlotBook(string username)
     {
         try 
         {
-            // user vaccination details
-
-            // fetch booking Id
+            // fetch booking details for user
             var _userBookingDetails = _bookingService.FetchBookingDetails(username);
 
-            // if booking Id exists
+            // fetch booking id for user
             if(_userBookingDetails?.Username != null)
             {
 
-                // return View - message page
+                // return message page
                 ViewBag.SlotBookingMsg = $"{username} - already booked both slots, booking Id: {_userBookingDetails.BookingId}";
                 return View("~/Views/Booking/SlotBookError.cshtml");
             }
 
-            // if booking Id not exists
+            // if booking id not exists
             else
             {
                 // fetch username
                 @ViewBag.Username = username;
 
-                // return View - new slot booking form
+                // return new slot booking form
                 return View();
             }
         }
@@ -63,7 +69,16 @@ public class BookingController:Controller
         }
     }
 
-    // action method: submit slot booking form
+    /*
+    *   action method: SlotBook()
+    *   http request: POST
+    *   purpose: to submit slot booking form for user
+    *   return: 
+    *       if success, submit slot booking form, redirect to user profile page
+    *       if failed, get back to slot booking form
+    *   authorization: required
+    */
+    [Authorize]
     [HttpPost("Account/UserProfile/{username}/SlotBook")]
     public IActionResult SlotBook(BookingFormModel submittedDetails)
     {
@@ -72,6 +87,7 @@ public class BookingController:Controller
             // check slots availability
             bool _isSlotsAvailable = _bookingService.IsSlotsAvailable();
 
+            // if slots available
             if(_isSlotsAvailable)
             {
                 if(ModelState.IsValid)
@@ -118,6 +134,8 @@ public class BookingController:Controller
                 }
 
             }
+
+            // if slot not available
             else
             {
                 // return - message page
@@ -134,7 +152,5 @@ public class BookingController:Controller
         }
     
     }
-
-
 
 }

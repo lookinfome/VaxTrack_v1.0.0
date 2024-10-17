@@ -5,39 +5,44 @@ using System.Linq;
 
 namespace VaxTrack_v1.Services
 {
+    // interface: admin service | to serve as service and allowed as injectable
     public interface IAdminService
     {
         public List<AdminViewUserVaccinationDetails> FetchAdminViewUserVaccinationDetails();
         public List<AdminViewUserVaccinationDetails> FilterAdminViewUsersVaccinationDetails(string filter);
         public bool ApproveUserVaccination(string username, string bookingId);
-        public int FetchTotalVaccinationCompletedCount();
-        public int FetchTotalUserCount();
-        public int FetchUsersWithNoBooking();
-        public List<AdminViewUserWithoutBooking> FetchUsersWithoutBooking();
+        public int TotalVaccinationCompletedCount();
+        public int TotalUserCount();
+        public int UsersCountWithNoBooking();
+        public List<AdminViewUserWithoutBooking> UsersDetailsWithNoBooking();
         public List<HospitalDetailsModel> FetchAdminViewHospitalDetails();
         public List<HospitalDetailsModel> FilterAdminViewHospitalDetails(string filter);
     }
 
+    // class: admin service | implementing service methods and handeling utility methods
     public class AdminService : IAdminService
     {
         private AppDbContext _vaxTrackDBContext;
         private readonly IHospitalService _hospitalService;
         private readonly IUserVaccineService _userVaccineService;
+
+        private readonly IBookingService _bookingService;
         private string _vaccinationStatus = "Vaccinated"; 
 
-        // constructor
-        public AdminService(AppDbContext vaxTrackDBContext, IHospitalService hospitalService, IUserVaccineService userVaccineService)
+        // contructor: admin service | to initialize account service class variables
+        public AdminService(AppDbContext vaxTrackDBContext, IHospitalService hospitalService, IUserVaccineService userVaccineService, IBookingService bookingService)
         {
             _vaxTrackDBContext = vaxTrackDBContext;
             _hospitalService = hospitalService;
+            _bookingService = bookingService;
             _userVaccineService = userVaccineService;
         }
 
-        // ===================================
-        // user vaccination details - admin 
-        // ===================================
-
-        // method: fetch all user vaccination details
+        /*
+        *   service method: FetchAdminViewUserVaccinationDetails()
+        *   purpose: to fetch list of user's vaccination details with booking details
+        *   return: return list of user's vaccination details with booking details
+        */
         public List<AdminViewUserVaccinationDetails> FetchAdminViewUserVaccinationDetails()
         {
             try
@@ -72,7 +77,12 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: filter user vaccination details
+        /*
+        *   service method: FilterAdminViewUsersVaccinationDetails()
+        *   purpose: to filter list of user's vaccination details with booking details
+        *   parameter: filter value as string
+        *   return: return filtered list of user's vaccination details with booking details
+        */
         public List<AdminViewUserVaccinationDetails> FilterAdminViewUsersVaccinationDetails(string filter)
         {
             try
@@ -93,7 +103,12 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: approve user vaccination
+        /*
+        *   service method: ApproveUserVaccination()
+        *   purpose: to approve user's vaccination
+        *   parameter: username and booking id as string
+        *   return: return bool value, 1 for successful approval, else 0
+        */
         public bool ApproveUserVaccination(string username, string bookingId)
         {
             try
@@ -149,67 +164,56 @@ namespace VaxTrack_v1.Services
             }
         }
         
-        // method: fetch total vaccination completed count
-        public int FetchTotalVaccinationCompletedCount()
+        /*
+        *   service method: TotalVaccinationCompletedCount()
+        *   purpose: to fetch user's count with vaccination complete
+        *   return: return int value as user's count
+        */
+        public int TotalVaccinationCompletedCount()
         {
-            int _vaccinatedCount = _vaxTrackDBContext.UserVaccinationDetails
-                    .Where(record => record.VaccinationStatus == "Vaccinated")
-                    .Count();
-            
+            int _vaccinatedCount = _userVaccineService.FetchTotalVaccinationCompletedCount();
             return _vaccinatedCount>0?_vaccinatedCount:0;
-
         }
 
-        // method: fetch total registered users count yet to book slots
-        public int FetchUsersWithNoBooking()
+        /*
+        *   service method: UsersCountWithNoBooking()
+        *   purpose: to fetch user's count without slot bookig
+        *   return: return int value as user's count
+        */
+        public int UsersCountWithNoBooking()
         {
-            int _usersCount = _vaxTrackDBContext.UserVaccinationDetails
-                                .GroupJoin(
-                                    _vaxTrackDBContext.BookingDetails,
-                                    user => user.Username,
-                                    booking => booking.Username,
-                                    (user, bookings) => new { user, bookings }
-                                )
-                                .Where(result => !result.bookings.Any())
-                                .Count();
-
-
+            int _usersCount = _bookingService.FetchUsersCountWithNoBooking();
             return _usersCount >0?_usersCount:0;
         }
    
-        // method: fetch total user count
-        public int FetchTotalUserCount()
+        /*
+        *   service method: TotalUserCount()
+        *   purpose: to fetch registered user's count with booking 
+        *   return: return int value as user's count
+        */
+        public int TotalUserCount()
         {
-            int _totalUserCount = _vaxTrackDBContext.UserVaccinationDetails.Count();
-
+            int _totalUserCount = _userVaccineService.FetchTotalUserCount();
             return _totalUserCount>0?_totalUserCount:0;
         }
 
-        // method: fetch total user without slot book
-        public List<AdminViewUserWithoutBooking> FetchUsersWithoutBooking()
+        /*
+        *   service method: UsersDetailsWithNoBooking()
+        *   purpose: to fetch list of users without slot bookig
+        *   return: return list of users without slot bookig
+        */
+        public List<AdminViewUserWithoutBooking> UsersDetailsWithNoBooking()
         {
-            var _usersWithoutSlot = from user in _vaxTrackDBContext.UserVaccinationDetails
-                                    join details in _vaxTrackDBContext.UserDetails on user.Username equals details.Username
-                                    join booking in _vaxTrackDBContext.BookingDetails on user.Username equals booking.Username into bookings
-                                    from booking in bookings.DefaultIfEmpty()
-                                    where booking == null
-                                    select new AdminViewUserWithoutBooking
-                                    {
-                                        Username = user.Username,
-                                        Name = details.Name
-                                    };
-
-            return _usersWithoutSlot.ToList();
+            List<AdminViewUserWithoutBooking> _usersWithoutSlot = _bookingService.FetchUsersDetailsWithNoBooking();
+            return _usersWithoutSlot;
         }
 
 
-
-
-        // ===================================
-        // hospital details - admin
-        // ===================================
-
-        // method: fetch hospital details
+        /*
+        *   service method: FetchAdminViewHospitalDetails()
+        *   purpose: to fetch list of hospital details
+        *   return: return list of hospital details
+        */
         public List<HospitalDetailsModel> FetchAdminViewHospitalDetails()
         {
             try
@@ -230,14 +234,24 @@ namespace VaxTrack_v1.Services
             }
         }
 
-        // method: filter hospital details by slots available
+        /*
+        *   service method: FilterAdminViewHospitalDetails()
+        *   purpose: to filter list of hospital details
+        *   parameter: filter value as string
+        *   return: return filtered list of hospital details
+        */
         public List<HospitalDetailsModel> FilterAdminViewHospitalDetails(string filter)
         {
             var _filteredHospitalDetails = _hospitalService.FilterHospitalDetails(filter);
             return _filteredHospitalDetails;
         }
      
-        // method: update hospital details
+        /*
+        *   service method: UpdateHospitalDetails()
+        *   purpose: to update available slots in hospital details table
+        *   parameter: hospital names value as string
+        *   return: return bool value, 1 if updated successfully, else 0
+        */
         private bool UpdateHospitalDetails(string hospitalName1, string hospitalName2)
         {
             try
