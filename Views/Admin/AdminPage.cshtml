@@ -91,6 +91,8 @@
         </div>
     </div>
 
+    <hr style="color: orange;">
+
     @* registered users with pending approvals *@
     
     <div class="row mt-3">
@@ -180,7 +182,7 @@
                         <th>Hospital ID</th>
                         <th>Hospital Name</th>
                         <th>Slots Available</th>
-                        @* <th>Increase Slots</th> *@
+                        <th>Increase Slots</th>
                     </tr>
                 </thead>
                 <tbody id="adminHospitalDetails">
@@ -190,6 +192,10 @@
                             <td>@record.HospitalId</td>
                             <td>@record.HospitalName</td>
                             <td>@record.SlotsAvailable</td>
+                            <td>
+                                <input type="number" id="increaseSlots_@record.HospitalId" style="width: 60px;" />
+                                <button type="button" id="increaseSlots" onclick="increaseSlots(@record.HospitalId)" class="slot-update-btn">Increase</button>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -261,6 +267,28 @@
                 });
             });
 
+            
         });
+
+        @* method: increase slots *@
+       // Method: increase slots
+        $(document).on('click', '#increaseSlots', function() {
+                var hospitalId = "H"+$(this).attr('onclick').match(/\d+/)[0];
+                var increaseValue = $('#increaseSlots_' + hospitalId).val();
+                $.ajax({
+                    url: '@Url.Action("IncreaseSlots", "Admin")',
+                    type: 'GET',
+                    data: { hospitalId: hospitalId, increaseBy: increaseValue },
+                    success: function(data) {
+                        $('#adminHospitalDetails').html(data);
+                    },
+                    error: function() {
+                        alert("An error occurred while increasing slots.");
+                    }
+                });
+            });
+
+        
+
     </script>
 }

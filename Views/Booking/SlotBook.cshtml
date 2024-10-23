@@ -20,14 +20,14 @@
             {
                 @* dose 1 *@
                 <div class="mt-5">
-                    @Html.LabelFor(model=>model.Dose1Date, "Dose 1 Date")
-                    @Html.TextBoxFor(model => model.Dose1Date, new { @style="width:100%;", type = "date", @class = "slot-booking-form-input", min = lowerLimitd1, id = "Dose1Date" })
+                    @Html.LabelFor(model=>model.Dose1Date, "Dose 1 Date", new {@style="color:gray"})
+                    @Html.TextBoxFor(model => model.Dose1Date, new { @style="width:100%;", type = "date", @class = "slot-booking-form-input", min = lowerLimitd1, id = "Dose1Date", onchange = "setDose2MinDate()" })
                     @Html.ValidationMessageFor(model => model.Dose1Date, null, new {@class="slot-booking-form-validation-msg"}, null)
                 </div>
 
                 @* dose 2 *@
                 <div class="mt-2">
-                    @Html.LabelFor(model=>model.Dose2Date, "Dose 2 Date")
+                    @Html.LabelFor(model=>model.Dose2Date, "Dose 2 Date", new {@style="color:gray"})
                     @Html.TextBoxFor(model => model.Dose2Date, new { @style="width:100%;", type = "date", @class = "slot-booking-form-input", max = upperLimitd2, id = "Dose2Date" })
                     @Html.ValidationMessageFor(model => model.Dose2Date, null, new {@class="slot-booking-form-validation-msg"}, null)
                 </div>
@@ -56,5 +56,10 @@
             var dose2DateInput = document.getElementById('Dose2Date');
             dose2DateInput.min = dose1Date;
         });
+
+        function setDose2MinDate() {
+        var dose1Date = document.getElementById("Dose1Date").value;
+        document.getElementById("Dose2Date").min = dose1Date;
+        }
     </script>
 }

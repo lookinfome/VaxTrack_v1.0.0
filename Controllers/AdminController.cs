@@ -179,4 +179,37 @@ public class AdminController:Controller
         }
     }
 
+    /*
+    *   action method: UpdateHospitalDetailsByAdmin()
+    *   http request: POST
+    *   purpose: to update hospital table with available slots
+    *   return: updated list of hospital table with available slots
+    *   authorization: required
+    */
+
+    [HttpGet("Admin/IncreaseSlots")]
+    public ActionResult IncreaseSlots(string hospitalId, int increaseBy)
+    {
+        try
+        {
+            _adminService.UpdateAvailableSlotsById(hospitalId, increaseBy);
+            // default hospital details
+            List<HospitalDetailsModel> _adminHospitalDetails = _adminService.FetchAdminViewHospitalDetails();
+            ViewBag.HospitalDetails = _adminHospitalDetails;
+
+            if(_adminHospitalDetails.Count>0)
+            {
+                return PartialView("_UpdatedSlotHospitalTablePartial", _adminHospitalDetails);
+            }
+            // return error page
+            return PartialView("_AdminErrorMsgPartial", _adminHospitalDetails);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unexpected error occurred while updating available slots: {ex.Message}");
+            return PartialView("_AdminErrorMsgPartial", new List<HospitalDetailsModel>());
+        }
+    }
+
 }

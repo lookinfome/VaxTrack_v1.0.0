@@ -11,6 +11,7 @@ namespace VaxTrack_v1.Services
         public List<HospitalDetailsModel> FetchHospitalDetails();
         public List<HospitalDetailsModel> FilterHospitalDetails(string filter);
         public bool UpdateHospitalDetails(string hospitalName1, string hospitalName2);
+        public HospitalDetailsModel FetchHospitalDetailsById(string hospitalId);
     }
 
     // class: hospital service | implementing service methods and handeling utility methods
@@ -51,6 +52,20 @@ namespace VaxTrack_v1.Services
             }
 
         }
+
+        /*
+        *   service method: FetchHospitalDetailsById()
+        *   purpose: to fetch list of hospital details with available slots
+        *   parameter: hospital Id
+        *   return: list of hospital details with available slots
+        */
+        public HospitalDetailsModel FetchHospitalDetailsById(string hospitalId)
+        {
+            HospitalDetailsModel hospitalDetails = _vaxTrackDBContext.HospitalDetails.FirstOrDefault(record => record.HospitalId == hospitalId);
+            return hospitalDetails;
+        }
+
+
 
         /*
         *   service method: FilterHospitalDetails()

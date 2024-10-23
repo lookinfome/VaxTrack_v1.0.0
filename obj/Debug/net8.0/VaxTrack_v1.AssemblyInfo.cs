@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VaxTrack_v1")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34f119138fd1f21656758408ded21635040893c8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+255276b0ba3c185d159e28d008cb7488a2243be2")]
 [assembly: System.Reflection.AssemblyProductAttribute("VaxTrack_v1")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VaxTrack_v1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

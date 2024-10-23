@@ -20,7 +20,7 @@
 
                 @* password *@
                 <div>
-                    @Html.TextBoxFor(model=>model.Password, new{@style="width: 100%;", @class="mt-4 login-form-input", placeholder="Password"})
+                    @Html.PasswordFor(model=>model.Password, new{@style="width: 100%;", @class="mt-4 login-form-input", placeholder="Password"})
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "mx-2 login-form-validation-msg" }, null)
                 </div>
 

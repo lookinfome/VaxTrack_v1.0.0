@@ -17,6 +17,7 @@ namespace VaxTrack_v1.Services
         public List<AdminViewUserWithoutBooking> UsersDetailsWithNoBooking();
         public List<HospitalDetailsModel> FetchAdminViewHospitalDetails();
         public List<HospitalDetailsModel> FilterAdminViewHospitalDetails(string filter);
+        public void UpdateAvailableSlotsById(string hospitalId, int increaseBy);
     }
 
     // class: admin service | implementing service methods and handeling utility methods
@@ -273,7 +274,28 @@ namespace VaxTrack_v1.Services
         
         }
 
-    
+        /*
+        *   service method: UpdateAvailableSlotsById()
+        *   purpose to increase slots available in hospitals by admin
+        *   parameter: hospital id as string and increase by value as int
+        *   return: return void
+        */
+        public void UpdateAvailableSlotsById(string hospitalId, int increaseBy)
+        {
+            HospitalDetailsModel _hospitalDetails = _hospitalService.FetchHospitalDetailsById(hospitalId);
+
+            if(_hospitalDetails != null)
+            {
+                _hospitalDetails.SlotsAvailable = _hospitalDetails.SlotsAvailable+increaseBy;
+
+                _vaxTrackDBContext.HospitalDetails.Update(_hospitalDetails);
+                _vaxTrackDBContext.SaveChanges();
+            }
+            else
+            {
+                Console.WriteLine($"unexpected error occurred while updating slots");
+            }
+        }
 
     }
 }

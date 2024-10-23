@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VaxTrack_v1.Models;
 public class UserDetailsModel
@@ -13,6 +14,10 @@ public class UserDetailsModel
     [Required(ErrorMessage = "Password is required")]
     [DataType(DataType.Password)]
     public string Password {get; set;}="";
+
+    [NotMapped]
+    [Compare("Password", ErrorMessage = "Passwords do not match.")]
+    public string ConfirmPassword { get; set; }="";
 
     // Properties for registration
 

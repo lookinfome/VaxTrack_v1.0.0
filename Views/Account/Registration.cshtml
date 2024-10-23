@@ -45,13 +45,20 @@
 
                 @* password *@
                 <div class="">
-                    @Html.PasswordFor(model => model.Password, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Password" })
+                    @Html.PasswordFor(model => model.Password, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Password", id = "Password" })
+                    <span id="passwordStrength" class="mx-2 registration-form-validation-msg"></span>
                     @Html.ValidationMessageFor(model => model.Password, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* confirm password *@
+                <div class="">
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Confirm Password" })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
                 </div>
                 
                 @* birthdate *@
                 <div class="">
-                    @Html.LabelFor(model=>model.Birthdate,"Date of Birth", new {@class="mt-4"})
+                    @Html.LabelFor(model=>model.Birthdate,"Date of Birth", new {@style="color:gray", @class="mt-4"})
                     @Html.TextBoxFor(model => model.Birthdate, new { @style="width:100%;", type = "date", max = currMonthYear, @class = "registration-form-input", placeholder = "mm/dd/yyyy" })
                     @Html.ValidationMessageFor(model => model.Birthdate, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
                 </div>
@@ -71,3 +78,68 @@
     </div>
 
 </div>
+
+
+@section Scripts {
+    <script>
+        document.getElementById('Password').addEventListener('input', function () {
+            var password = this.value;
+            var strengthLabel = document.getElementById('passwordStrength');
+            var strength = getPasswordStrength(password);
+            strengthLabel.textContent = strength;
+            strengthLabel.style.color = getStrengthColor(strength);
+            
+        });
+
+        function getPasswordStrength(password) {
+            var strength = "Weak";
+            var regexes = [
+                /[A-Z]/, // Uppercase
+                /[0-9]/, // Digit
+                /[^A-Za-z0-9]/, // Non-alphanumeric
+                /.{6,}/ // At least 6 characters
+            ];
+
+            var passedTests = regexes.reduce((acc, regex) => acc + regex.test(password), 0);
+
+            switch (passedTests) {
+                case 4:
+                    strength = "Highly Strong";
+                    break;
+                case 3:
+                    strength = "Strong";
+                    break;
+                case 2:
+                    strength = "Moderate";
+                    break;
+                default:
+                    strength = "Weak";
+            }
+
+            return strength;
+        }
+
+        function getStrengthColor(strength) {
+            switch (strength) {
+                case "Highly Strong":
+                    return "darkgreen";
+                case "Strong":
+                    return "lightgreen";
+                case "Moderate":
+                    return "orange";
+                case "Weak":
+                default:
+                    return "red";
+            }
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function (e) {
+            var password = document.getElementById('Password').value;
+            var confirmPassword = document.getElementById('ConfirmPassword').value;
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match.');
+            }
+        });
+    </script>
+}

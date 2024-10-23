@@ -1,0 +1,14 @@
+@model IEnumerable<VaxTrack_v1.Models.HospitalDetailsModel>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.HospitalId</td>
+        <td>@item.HospitalName</td>
+        <td>@item.SlotsAvailable</td>
+        <td>
+            <input type="number" id="increaseSlots_@item.HospitalId" style="width: 60px;" />
+            <button type="button" id="increaseSlots" onclick="increaseSlots(@item.HospitalId)" class="slot-update-btn">Increase</button>
+        </td>
+    </tr>
+}
