@@ -6,37 +6,48 @@
 }
 
 <div class="container mt-5">
-    <h1>Slot Book Page</h1>
 
-    <div class="mt-5">
-        @* form: new slot booking *@
-        @using(Html.BeginForm("SlotBook", "Booking", FormMethod.Post))
-        {
-            @* dose 1 *@
-            <div class="mt-2">
-                @Html.LabelFor(model => model.Dose1Date)
-                @Html.TextBoxFor(model => model.Dose1Date, new { type = "date", @class = "mx-2", min = lowerLimitd1, id = "Dose1Date" })
-                @Html.ValidationMessageFor(model => model.Dose1Date)
+    <div class="row justify-content-center">
+        <div class="col col-lg-4 col-md-6 col-sm-12">
+            
+            @* head *@
+            <div class="text-center mt-4">
+                <h1> SLOT BOOKING </h1>
             </div>
 
-            @* dose 2 *@
-            <div class="mt-2">
-                @Html.LabelFor(model => model.Dose2Date)
-                @Html.TextBoxFor(model => model.Dose2Date, new { type = "date", @class = "mx-2", max = upperLimitd2, id = "Dose2Date" })
-                @Html.ValidationMessageFor(model => model.Dose2Date)
+            @* slot booking form *@
+            @using(Html.BeginForm("SlotBook", "Booking", FormMethod.Post))
+            {
+                @* dose 1 *@
+                <div class="mt-5">
+                    @Html.LabelFor(model=>model.Dose1Date, "Dose 1 Date")
+                    @Html.TextBoxFor(model => model.Dose1Date, new { @style="width:100%;", type = "date", @class = "slot-booking-form-input", min = lowerLimitd1, id = "Dose1Date" })
+                    @Html.ValidationMessageFor(model => model.Dose1Date, null, new {@class="slot-booking-form-validation-msg"}, null)
+                </div>
+
+                @* dose 2 *@
+                <div class="mt-2">
+                    @Html.LabelFor(model=>model.Dose2Date, "Dose 2 Date")
+                    @Html.TextBoxFor(model => model.Dose2Date, new { @style="width:100%;", type = "date", @class = "slot-booking-form-input", max = upperLimitd2, id = "Dose2Date" })
+                    @Html.ValidationMessageFor(model => model.Dose2Date, null, new {@class="slot-booking-form-validation-msg"}, null)
+                </div>
+
+                @* submit *@
+                <input type="submit" value="Book Slot" class="booking-form-submit mt-4" />
+            }
+
+            @* action buttons *@
+            <div class="mt-1">
+                <a href="@Url.Action("UserProfile", "Profile", new {username = ViewBag.Username})" class="">Go Back</a>
             </div>
 
-            @* submit *@
-            <input type="submit" value="Book Slot" class="btn btn-dark mt-4" />
-        }
-
-        @* action buttons *@
-        <div class="mt-1">
-            <a href="@Url.Action("UserProfile", "Profile", new {username = ViewBag.Username})" class="btn btn-secondary">Go Back</a>
         </div>
     </div>
 
 </div>
+
+
+
 
 @section Scripts {
     <script>

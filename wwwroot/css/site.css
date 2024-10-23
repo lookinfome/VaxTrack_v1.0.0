@@ -21,43 +21,120 @@ body {
   margin-bottom: 60px;
 }
 
-/* user profile page */
+/* home page */
 
-.admin-dashboard-pending-approval th,
-.admin-dashboard-hospital-available-slots th{
+.carousel-inner{
+  height: 500px;
+  width: 500px;
+}
+
+.carousel-item{
+  background-color:mistyrose;
+  border-radius: 25px;
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+}
+
+.home-page-login-btn{
   background-color: yellow;
-  text-align: center;
 }
 
-.admin-dashboard-pending-approval th, 
-.admin-dashboard-pending-approval td,
-.admin-dashboard-hospital-available-slots th,
-.admin-dashboard-hospital-available-slots td{
-  border: 1px solid greenyellow;
-  text-align: center;
-  padding: 5px;
+.home-page-registration-btn{
+  background-color: skyblue;
 }
 
-.admin-dashboard-stats th{
-  background-color: lightgray;
-  text-align: center;
+.home-page-login-btn, .home-page-registration-btn{
+  padding: 15px;
+  color: black;
+  font-weight: 600;
+  font-size: larger;
+  border-radius: 10px;
+  text-decoration: none;
 }
 
-.admin-dashboard-stats th, 
-.admin-dashboard-stats td{
-  border: 1px solid greenyellow;
-  text-align: center;
-  padding: 5px;
+.home-page-login-btn:hover, .home-page-registration-btn:hover{
+  color: black;
 }
 
-.admin-dashboard-user-without-slots th,
-.admin-dashboard-user-without-slots td{
-  border: 1px solid greenyellow;
-  text-align: center;
-  padding: 5px;
+/* booking form submit */
+.booking-form-submit{
+  background-color: gainsboro;
+  border: 1px solid gainsboro;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: large;
+  font-weight: 600;
+  width: 100%;
+  transition: 0.5s ease-in-out;
 }
 
-.admin-dashboard-user-without-slots th{
-  background-color: salmon;
-  text-align: center;
+.booking-form-submit:hover{
+  background-color: gray;
+  border: 1px solid gray;
 }
+
+/* login form, registration form, and slot booking form */
+
+.login-form-input, 
+.registration-form-input, 
+.slot-booking-form-input{
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+}
+
+.login-form-validation-msg, 
+.registration-form-validation-msg, 
+.slot-booking-form-validation-msg{
+  color: red;
+}
+
+.login-form-submit{
+  background-color: yellow;
+  border: 1px solid yellow;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: large;
+  font-weight: 600;
+  width: 100%;
+  transition: 0.5s ease-in-out;
+}
+
+.login-form-submit:hover{
+  background-color: yellowgreen;
+  border: 1px solid yellowgreen;
+}
+
+.registration-form-submit{
+  background-color:skyblue;
+  border: 1px solid skyblue;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: large;
+  font-weight: 600;
+  width: 100%;
+  transition: 0.5s ease-in-out;
+}
+
+.registration-form-submit:hover{
+  background-color:steelblue;
+  border: 1px solid steelblue;
+}
+
+/* user profile page */
+.user-detail-column{
+  background-color: whitesmoke;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+
+
+/* admin page */
+.admin-portal-stats th, .admin-portal-stats td{
+  border: 1px solid black;
+  padding: 10px;
+}
+
+

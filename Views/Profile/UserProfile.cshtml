@@ -1,71 +1,104 @@
 @model UserDetailsModel
 
+@{
+    @* format UID *@
+    string Uid = @Model.Uid;
+    string FormattedUid = string.Format("{0}-{1}-{2}-{3}", 
+                                        Uid.Substring(0, 3), 
+                                        Uid.Substring(3, 3), 
+                                        Uid.Substring(6, 3), 
+                                        Uid.Substring(9, 3));
+    
+    string Dose1Date = (DateTime) @ViewData["Dose1Date"]==DateTime.MinValue?"NA":@ViewData["Dose1Date"].ToString();
+    string Dose2Date = (DateTime) @ViewData["Dose2Date"]==DateTime.MinValue?"NA":@ViewData["Dose2Date"].ToString();
 
-
+}
 
 <div class="container mt-5">
-    
-    <div>
-        <h1>@Model.Name</h1> 
-        <h5 class="mt-5 mb-5">
-            Username: 
-            <b>@Model.Username</b>
-        </h5>
+    <div class="row user-detail-row">
+
+        <div class="col col-lg-12 col-md-12 col-sm-12 user-detail-column">
+
+            @* name and username *@
+            <div class="d-flex justify-content-between">
+                <div> <h3> @Model.Name </h3> </div>
+                <div> 
+                    <p>
+                        <span style="color:gray; font-weight: 600;"> Username: </span>
+                        <span class="mx-2"> <b>@Model.Username</b> </span> 
+                    </p> 
+                </div>
+            </div>
+
+            @* birth date, gender, unique id, phone *@
+            <div class="mt-4 d-flex justify-content-between">
+                <div>
+                    <span style="color:gray; font-weight: 600;"> <i class="fas fa-birthday-cake"></i> Date of Birth <br>  </span>
+                    <b>@Model.Birthdate.Date.ToString("yyyy-MM-dd")</b>
+                </div>
+                <div>
+                    <span style="color:gray; font-weight: 600;"> <i class="fas fa-venus-mars"></i> Gender <br> </span>
+                    @if(Model.Gender == "M") { <span><b>Male</b></span> }
+                    @if(Model.Gender == "F") { <span><b>Female</b></span> }
+                    @if(Model.Gender == "O") { <span><b>Other</b></span> }
+                </div>
+                <div>
+                    <span style="color:gray; font-weight: 600;"> <i class="fas fa-phone"></i> Contact <br> </span>
+                    <b>@Model.Phone</b>
+                </div>
+                <div>
+                    <span style="color:gray; font-weight: 600;"> <i class="fas fa-id-badge"></i> Unique ID <br>  </span>
+                    <b>@FormattedUid</b>
+                </div>
+            </div>
+
+            <hr>
+
+            @* vaccination details *@
+            <div class="d-flex justify-content-between">
+                <div>
+                    <span style="color: gray; font-weight: 600;"> <i class="fas fa-info-circle"></i> Vaccination Status <br> </span>
+                    @if((string)ViewData["VaccinationStatus"] == "Vaccinated")
+                    {
+                        <p style="color:yellowgreen;"> 
+                            <b>@ViewData["VaccinationStatus"] <i class="fas fa-thumbs-up"></i></b>
+                        </p>
+                    }
+                    else
+                    {
+                        <p style="color: tomato;">
+                            <b>@ViewData["VaccinationStatus"] <i class="fas fa-thumbs-down"></i></b>
+                        </p>
+                    }
+                    
+                </div>
+
+                <div>
+                    @* <i class="far fa-calendar-alt"></i> Dose 1 <br> @ViewData["Dose1Date"] *@
+                    <span style="color:gray; font-weight: 600;"> <i class="far fa-calendar-alt"></i> Dose 1 <br>  </span>
+                    <b>@Dose1Date</b>
+                </div>
+
+                <div>
+                    @* <i class="far fa-calendar-alt"></i> Dose 2 <br> @ViewData["Dose2Date"] *@
+                    <span style="color:gray; font-weight: 600;"> <i class="far fa-calendar-alt"></i> Dose 2 <br>  </span>
+                    <b>@Dose2Date</b>
+                </div>
+
+                @* slot book *@
+                <div>
+                    @if(ViewBag.SlotBookButtonEnable)
+                    {
+                        <span class=""><a href="@Url.Action("SlotBook", "Booking", new {username = Model.Username})" class="btn btn-warning">Book Slot</a></span>
+                    }
+                </div>
+
+            </div>
+            
+            
+
+        </div>
     </div>
-
-    @* user details *@
-
-    <p><b><i><u>User Details</u></i></b></p>
-
-    <table class="user-details-table">
-        <thead>
-            <th>UID</th>
-            <th>DOB (YYYY-MM-DD)</th>
-            <th>Gender</th>
-            <th>Phone</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model.Uid</td>
-                <td>@Model.Birthdate.ToString("yyyy-MM-dd")</td>
-                <td>@Model.Gender</td>
-                <td>@Model.Phone</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <br>
-
-    @* user vaccination details *@
-    <p><b><i><u>User Vaccination Details</u></i></b></p>
-    <table class="user-vaccination-details-table">
-        <thead>
-            <th>Vaccination Status</th>
-            <th>Dose 1 Date</th>
-            <th>Dose 2 Date</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@ViewData["VaccinationStatus"]</td>
-                <td>@ViewData["Dose1Date"]</td>
-                <td>@ViewData["Dose2Date"]</td>
-            </tr>
-        </tbody>
-    </table>
-
-    
-
-    @* action buttons *@
-    <div class="mt-4">
-
-        @* button: go home *@
-        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Home</a>
-
-        @* button: book slot *@
-        @if(ViewBag.SlotBookButtonEnable)
-        {
-            <span class="mx-2"><a href="@Url.Action("SlotBook", "Booking", new {username = Model.Username})" class="btn btn-info">Book Slot</a></span>
-        }
-    </div>
-
 </div>
+
+

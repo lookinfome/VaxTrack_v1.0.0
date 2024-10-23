@@ -149,4 +149,3 @@ C:\Users\vivek.kumar162\VaxTrack_v1\VaxTrack_v1\obj\Debug\net8.0\refint\VaxTrack
 C:\Users\vivek.kumar162\VaxTrack_v1\VaxTrack_v1\obj\Debug\net8.0\VaxTrack_v1.pdb
 C:\Users\vivek.kumar162\VaxTrack_v1\VaxTrack_v1\obj\Debug\net8.0\VaxTrack_v1.genruntimeconfig.cache
 C:\Users\vivek.kumar162\VaxTrack_v1\VaxTrack_v1\obj\Debug\net8.0\ref\VaxTrack_v1.dll
-C:\Users\vivek.kumar162\VaxTrack_v1\VaxTrack_v1\obj\Debug\net8.0\VaxTrack_v1.sourcelink.json

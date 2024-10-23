@@ -6,93 +6,68 @@
 
 <div class="container mt-5">
 
-    <h1>Registration</h1>
+    <div class="row justify-content-center">
+        <div class="col col-lg-4 col-md-6 col-sm-12 registration-form">
 
-    @* registration form *@
-    @using(Html.BeginForm("Registration", "Account", FormMethod.Post))
-    {
-        @* Name *@
-        <div>
-            @Html.LabelFor(model => model.Name)
-            <span class="mx-2">@Html.TextBoxFor(model=> model.Name)</span>
-            @Html.ValidationMessageFor(model => model.Name)
+            @* head *@
+            <div class="text-center mt-4">
+                <h1> REGISTRATION </h1>
+            </div>
+
+            @* registration form *@
+            @using(Html.BeginForm("Registration", "Account", FormMethod.Post))
+            {
+                @* name *@
+                <div class="">
+                    @Html.TextBoxFor(model => model.Name, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Full Name" })
+                    @Html.ValidationMessageFor(model => model.Name, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* uid *@
+                <div class="">
+                    @Html.TextBoxFor(model => model.Uid, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Unique Aadhar Number" })
+                    @Html.ValidationMessageFor(model => model.Uid, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* phone *@
+                <div class="">
+                    @Html.TextBoxFor(model => model.Phone, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Phone Number" })
+                    @Html.ValidationMessageFor(model => model.Phone, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* gender *@
+                <div class="">
+                    @Html.RadioButtonFor(model => model.Gender, "M", new { @class = "mt-4" }) Male
+                    @Html.RadioButtonFor(model => model.Gender, "F", new { @class = "mt-4 mx-2" }) Female
+                    @Html.RadioButtonFor(model => model.Gender, "O", new { @class = "mt-4 mx-2" }) Other
+                    @Html.ValidationMessageFor(model => model.Gender, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* password *@
+                <div class="">
+                    @Html.PasswordFor(model => model.Password, new { @style="width:100%;", @class = "mt-4 registration-form-input", placeholder = "Password" })
+                    @Html.ValidationMessageFor(model => model.Password, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+                
+                @* birthdate *@
+                <div class="">
+                    @Html.LabelFor(model=>model.Birthdate,"Date of Birth", new {@class="mt-4"})
+                    @Html.TextBoxFor(model => model.Birthdate, new { @style="width:100%;", type = "date", max = currMonthYear, @class = "registration-form-input", placeholder = "mm/dd/yyyy" })
+                    @Html.ValidationMessageFor(model => model.Birthdate, null, new { @class = "mx-2 registration-form-validation-msg" }, null)
+                </div>
+
+                @* submit *@
+                <div class="text-left">
+                    <input type="submit" class="mt-4 registration-form-submit" value="Sign Up" />
+                </div>
+            }
+
+            @* action buttons *@
+            <div class="text-left mt-1 mb-4">
+                Or already registered, <a href="@Url.Action("Login", "Account")">Sign In</a>.
+            </div>
+
         </div>
-
-        <br>
-
-        @* DOB *@
-        <div>
-            @Html.LabelFor(model => model.Birthdate)
-            <span class="mx-2">@Html.TextBoxFor(model => model.Birthdate, new {type="date", max = currMonthYear})</span>
-            @Html.ValidationMessageFor(model => model.Birthdate)
-        </div>
-
-        <br>
-
-        @* UID *@
-        <div>
-            @Html.LabelFor(model => model.Uid)
-            <span class="mx-2">@Html.TextBoxFor(model => model.Uid)</span>
-            @Html.ValidationMessageFor(model => model.Uid)
-        </div>
-
-        <br>
-
-        @* Gender *@
-        @Html.LabelFor(model => model.Gender)
-        <div>
-            <span>@Html.RadioButtonFor(model => model.Gender, "M") Male</span>
-            <span class="mx-2">@Html.RadioButtonFor(model => model.Gender, "F") Female</span>
-            <span class="mx-2">@Html.RadioButtonFor(model => model.Gender, "O") Other</span>
-
-        </div>
-        @Html.ValidationMessageFor(model => model.Gender)
-
-        <br>
-
-        @* Phone *@
-        <div>
-            @Html.LabelFor(model => model.Phone)
-            <span class="mx-2">@Html.TextBoxFor(model => model.Phone)</span>
-            @Html.ValidationMessageFor(model => model.Phone)
-        </div>
-
-        <br>
-        @* Role *@
-        @* <div>
-            @Html.LabelFor(model=>model.Role)
-            @Html.TextBoxFor(model=>model.Role, new {@class="mx-2"})
-            @Html.ValidationMessageFor(model=>model.Role)
-        </div> *@
-
-        <br>
-
-        @* Username *@
-        @* <div>
-            @Html.LabelFor(model => model.Username)
-            <span class="mx-2">@Html.TextBoxFor(model => model.Username)</span>
-            @Html.ValidationMessageFor(model => model.Username)
-        </div> *@
-
-        @* Password *@
-        <div>
-            @Html.LabelFor(model => model.Password)
-            <span class="mx-2">@Html.PasswordFor(model => model.Password)</span>
-            @Html.ValidationMessageFor(model => model.Password)
-        </div>
-
-        <br>
-
-        <input type="submit" class="btn btn-dark" value="Register" />
-    }
-
-
-    @* action buttons *@
-    <div class="mt-1">
-        <a href="@Url.Action("Index", "Home")" class="btn btn-success">Home</a>
-        <span class="mx-2">
-            Or already registered, <a href="@Url.Action("Login", "Account")">Sign In</a>.
-        </span>
     </div>
 
 </div>

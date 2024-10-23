@@ -1,29 +1,111 @@
+
 <div class="container mt-5">
-    <h3>Admin Dashboard</h3>
-
     <div class="row">
-        
-        @* user vaccination details pending for approval *@
-        <div class="mt-4 col col-lg-6">
-            
-            @* heading *@
-            <h5>
-                User Vaccination Details: 
-                <span style="color: darkorange;"> <b>Pending for Approval</b> </span>
-            </h5>
+        <h1> Admin Dashboard </h1>
+    </div>
 
-            @* filter *@
-            <form class="mt-4">
-                <label for="filterUserVaccinationDetails">Filter by Vaccination Status:</label>
-                <select id="filterUserVaccinationDetails" name="filter">
-                    <option value="">All</option>
-                    <option value="Vaccinated">Vaccinated</option>
-                    <option value="Not Vaccinated">Not Vaccinated</option>
-                </select>
-            </form>
+    @* portal status *@
 
-            @* table *@
-            <table class="admin-dashboard-pending-approval mt-2">
+    <div class="row mt-3">
+        <h3 style="color: gray;">Portal Stats</h3>
+
+        <div class="col">
+            <table class="table table-hover"">
+                <thead>
+                    <tr>
+                        <th>Total Registered Users</th>
+                        <th>User completed vaccination (Dose 1 and Dose 2)</th>
+                        <th>User vaccination approval pending</th>
+                        <th>Registered user yet to book slots</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        @if(ViewBag.TotalUsersCount >0 )
+                        {
+                            <td>
+                                @ViewBag.TotalUsersCount
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.TotalVaccinationCount > 0)
+                        {
+                            <td> 
+                                @ViewBag.TotalVaccinationCount 
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.UserCountWithPendingApproval > 0)
+                        {
+                            <td> @ViewBag.UserCountWithPendingApproval </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                        @if(ViewBag.UsersCountWithNoBooking > 0)
+                        {
+                            <td> 
+                                @ViewBag.UsersCountWithNoBooking 
+                            </td>
+                        }
+                        else
+                        {
+                            <td> 0 </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* registered users without slots *@
+    
+    <div class="row mt-3">
+        <h3 style="color: gray;">Registered Users: Without Slots</h3>
+
+        <div class="col col-6">
+            <table class="table table-hover"">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var rec in ViewBag.UserListWithoutSlot)
+                    {
+                        <tr>
+                            <td>@rec.Username</td>
+                            <td>@rec.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* registered users with pending approvals *@
+    
+    <div class="row mt-3">
+        <h3 style="color: gray;">Registered Users: With Pending Approvals</h3>
+        <form class="mt-4 admin-form">
+            <label for="filterUserVaccinationDetails">Filter by Vaccination Status:</label>
+            <select style="padding: 5px; border:10px; border: 1px solid lightgray;" id="filterUserVaccinationDetails" name="filter">
+                <option value="">All</option>
+                <option value="Vaccinated">Vaccinated</option>
+                <option value="Not Vaccinated">Not Vaccinated</option>
+            </select>
+        </form>
+
+        <div class="col mt-3">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -72,36 +154,33 @@
             </table>
         </div>
 
-        @* hospital details with available slot count *@
-        <div class="mt-4 mx-2 col col-lg-8">
+    </div>
 
-            @* heading *@
-            <h5>
-                Hospital Details:
-                <span style="color: mediumseagreen;"> <b>With Available Slots Count</b> </span>
-            </h5>
+    @* hospital details with available slots *@
 
-            @* filter *@
-            <form class="mt-4">
-                <label for="filterHospitalDetails">Filter Hospital Details:</label>
-                <select id="filterHospitalDetails" name="filterHospital">
-                    <option value="">All</option>
-                    <option value="0">less than 1</option>
-                    <option value="1">less than 2</option>
-                    <option value="2">less than 3</option>
-                    <option value="3">less than 4</option>
-                    <option value="4">less than 5</option>
-                    <option value="5">less than 6</option>
-                </select>
-            </form>
+    <div class="row mt-3">
+        <h3 style="color: gray">Hospial Details: With Available Slots</h3>
+        <form class="mt-4 admin-form">
+            <label for="filterHospitalDetails">Filter Hospital Details:</label>
+            <select style="padding: 5px; border:10px; border: 1px solid lightgray;" id="filterHospitalDetails" name="filterHospital">
+                <option value="">All</option>
+                <option value="0">less than 1</option>
+                <option value="1">less than 2</option>
+                <option value="2">less than 3</option>
+                <option value="3">less than 4</option>
+                <option value="4">less than 5</option>
+                <option value="5">less than 6</option>
+            </select>
+        </form>
 
-            @* table *@
-            <table class="admin-dashboard-hospital-available-slots mt-2">
+        <div class="col mt-3">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Hospital ID</th>
                         <th>Hospital Name</th>
                         <th>Slots Available</th>
+                        @* <th>Increase Slots</th> *@
                     </tr>
                 </thead>
                 <tbody id="adminHospitalDetails">
@@ -119,115 +198,11 @@
 
     </div>
 
-    <hr class="mt-5">
-
-    <div class="row">
-
-        @* users yet to book slots *@
-        <div class="mt-4 col col-lg-6">
-
-            @* head *@
-            <h5> Registered Users: Without Slots </h5>
-
-            @* table *@
-            <table class="admin-dashboard-user-without-slots mt-2">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var rec in ViewBag.UserListWithoutSlot)
-                    {
-                        <tr>
-                            <td>@rec.Username</td>
-                            <td>@rec.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-        </div>
-
-    </div>
-
-    <hr class="mt-5">
-
-    <div class="row">
-
-        @* admin dashboard stats *@
-        <div class="mt-4 col col-lg-6">
-            @* heading *@
-            <h5> Portal Status </h5>
-
-            @* table *@
-            <table class="admin-dashboard-stats mt-2">
-                <thead>
-                    <tr>
-                        <th>Total Registered Users</th>
-                        <th>User completed vaccination (Dose 1 and Dose 2)</th>
-                        <th>User vaccination approval pending</th>
-                        <th>Registered user yet to book slots</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        @if(ViewBag.TotalUsersCount >0 )
-                        {
-                            <td>
-                                @ViewBag.TotalUsersCount
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.TotalVaccinationCount > 0)
-                        {
-                            <td> 
-                                @ViewBag.TotalVaccinationCount 
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.UserCountWithPendingApproval > 0)
-                        {
-                            <td> @ViewBag.UserCountWithPendingApproval </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.UsersCountWithNoBooking > 0)
-                        {
-                            <td> 
-                                @ViewBag.UsersCountWithNoBooking 
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-    </div>
-
-    <hr class="mt-5">
-
-
-
-
-
-    @* error message page block *@
-    <div id="adminErrorMsgPage"></div>
-
 </div>
+
+
+
+
 
 @section Scripts 
 {

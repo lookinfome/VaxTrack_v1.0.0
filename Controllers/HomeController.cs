@@ -9,6 +9,15 @@ namespace VaxTrack_v1.Controllers;
 public class HomeController : Controller
 {
     // constructor: home controller | to initialize controller class variables
+    string[] _picList = new string[]{
+        "../assets/img-2.jpg",
+        "../assets/img-3.jpg",
+        "../assets/img-4.jpg",
+        "../assets/img-5.jpg",
+        "../assets/img-6.jpg",
+        "../assets/img-7.jpg"
+    };
+
     public HomeController()
     {
     }
@@ -21,6 +30,7 @@ public class HomeController : Controller
     */
     public IActionResult Index()
     {
+        ViewBag.PicList = _picList;
         return View();
     }
     

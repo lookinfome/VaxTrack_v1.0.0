@@ -1,49 +1,71 @@
-﻿
+﻿<div class="container mt-5">
 
-<div class="container mt-5">
-    
-    <h1 class="text-center">Welcome To VaxTrak</h1>
+@{
+    string[] _picList = @ViewBag.PicList;
+}
 
-    @* action buttons *@
-    <div class="mt-1">
-
-        <div class="mt-5">
-            <p>
-                <b>**Welcome to CoWIN**:</b> The CoWIN portal is India's official platform for COVID-19 vaccination registration and management. Launched by the Ministry of Health and Family Welfare, it ensures a seamless and efficient vaccination process for all citizens. Whether you're booking your first dose or scheduling a booster, CoWIN is here to help.
-            </p>
-
-            <p>
-                <b>**User-Friendly Interface**:</b> Designed with simplicity in mind, the CoWIN portal offers an intuitive user experience. From easy registration to quick appointment scheduling, the platform guides users through every step. It also provides real-time updates on vaccine availability, ensuring you stay informed.
-            </p>
-
-            <p>
-                <b>**Secure and Reliable**:</b> Your data security is our top priority. CoWIN employs robust security measures to protect your personal information. The portal is regularly updated to safeguard against any potential threats, ensuring a safe and trustworthy experience for all users.
-            </p>
-
-            <p>
-                <b>**Comprehensive Support**:</b> CoWIN is more than just a registration portal. It offers comprehensive support, including FAQs, helplines, and detailed guides to assist you throughout the vaccination process. Our dedicated support team is always ready to help with any queries or concerns.
-            </p>
-            
-            <p>
-                <b>**Join the Fight Against COVID-19**:</b> By using the CoWIN portal, you're contributing to India's fight against COVID-19. Together, we can achieve widespread vaccination and move towards a healthier, safer future. Register today and take your step towards protection.
-
-            </p>
-        </div>
-
-
-        @if(!User.Identity.IsAuthenticated)
-        {
-            <div class="mt-5 text-center">
-                <a href="@Url.Action("Login", "Account")" class="btn btn-success">Login</a>
-                <a href="@Url.Action("Registration", "Account")" class="btn btn-warning mx-2">Register</a>
+    @* carousel *@
+    <div class="row">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div style="background-image: url(@_picList[4]); background-size: cover; background-repeat: no-repeat; background-position: center -80px;" class="carousel-item active">
+                    <h1> <b>Welcome to VaxTrack</b> </h1>
+                    <p>
+                        The VaxTrack portal is India's official platform for COVID-19 vaccination
+                        registration and management. Launched by the Ministry of Health and Family Welfare, it ensures a
+                        seamless and efficient vaccination process for all citizens.
+                    </p>
+                </div>
+                <div style="background-image: url(@_picList[5]); background-size: cover; background-repeat: no-repeat; background-position: center -80px;" class="carousel-item">
+                    <h1> <b>**User-Friendly Interface**</b> </h1>
+                    <p>
+                        Designed with simplicity in mind, the VaxTrack portal offers an
+                        intuitive user experience. From easy registration to quick appointment scheduling, the platform guides
+                        users through every step. It also provides real-time updates on vaccine availability, ensuring you stay
+                        informed.
+                    </p>
+                </div>
+                <div style="background-image: url(@_picList[3]); background-size: cover; background-repeat: no-repeat; background-position: center -80px;" class="carousel-item">
+                    <h1> <b>**Secure and Reliable**</b> </h1>
+                    <p>
+                        Your data security is our top priority. VaxTrack employs robust security
+                        measures to protect your personal information. The portal is regularly updated to safeguard against any
+                        potential threats, ensuring a safe and trustworthy experience for all users.
+                    </p>
+                </div>
+                <div style="background-image: url(@_picList[2]); background-size: cover; background-repeat: no-repeat; background-position: center -80px;" class="carousel-item">
+                    <h1> <b>**Comprehensive Support**</b> </h1>
+                    <p>
+                        VaxTrack is more than just a registration portal. It offers comprehensive
+                        support, including FAQs, helplines, and detailed guides to assist you throughout the vaccination
+                        process. Our dedicated support team is always ready to help with any queries or concerns.
+                    </p>
+                </div>
+                <div style="background-image: url(@_picList[3]); background-size: cover; background-repeat: no-repeat; background-position: center -80px;" class="carousel-item">
+                    <h1> <b>**Join the Fight Against COVID-19**</b> </h1>
+                    <p>
+                        By using the VaxTrack portal, you're contributing to India's
+                        fight against COVID-19. Together, we can achieve widespread vaccination and move towards a healthier,
+                        safer future. Register today and take your step towards protection.
+                    </p>
+                </div>
             </div>
-        }
-
+        </div>
     </div>
 
-
+    @* action buttons *@
+    <div class="row">
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="mt-5 text-center">
+                <a href="@Url.Action("Login", "Account")" class="home-page-login-btn">Sign In</a>
+                <a href="@Url.Action("Registration", "Account")" class="mx-2 home-page-registration-btn">Sign Up</a>
+            </div>
+        }
+    </div>
 
 </div>
+
 
 
 @section Scripts

@@ -32,6 +32,8 @@ public class UserDetailsModel
 
     [Required(ErrorMessage ="Phone no. is required")]
     [Phone(ErrorMessage = "Invalid phone number")]
+    [StringLength(10, ErrorMessage = "Phone number cannot be longer than 10 digits")]
+    [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be 10 digits")]
     public string Phone {get; set;}="";
 
     [Required(ErrorMessage = "Role is required")]
