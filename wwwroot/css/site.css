@@ -153,3 +153,8 @@ body {
   background-color:steelblue;
   border: 1px solid steelblue;
 }
+
+#myDoughnutChart {
+  width: 30px;
+  height: 30px;
+}
