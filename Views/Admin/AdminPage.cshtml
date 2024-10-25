@@ -1,3 +1,8 @@
+@{
+    @* var completedVaccination= ViewBag.TotalVaccinationCount;
+    var approvalPending = ViewBag.UserCountWithPendingApproval;
+    var yetToBookSlots = ViewBag.UsersCountWithNoBooking; *@
+}
 
 <div class="container mt-5">
 
@@ -8,107 +13,67 @@
         </div>
     }
 
-    <canvas id="myDoughnutChart" width="300px" height="300px"></canvas>
-
-
-
+    @* header row *@
     <div class="row">
         <h1> Admin Dashboard </h1>
     </div>
 
-    @* portal status *@
+    <hr style="color:black;">
 
-    <div class="row mt-3">
-        <h3 style="color: gray;">Portal Stats</h3>
+    @* portal status & user list: yet to register *@
+    <div class="row d-flex justify-content-between mt-3">
+        
 
-        <div class="col">
-            <table class="table table-hover"">
-                <thead>
-                    <tr>
-                        <th>Total Registered Users</th>
-                        <th>User completed vaccination (Dose 1 and Dose 2)</th>
-                        <th>User vaccination approval pending</th>
-                        <th>Registered user yet to book slots</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="text-center">
-                        @if(ViewBag.TotalUsersCount >0 )
-                        {
-                            <td>
-                                @ViewBag.TotalUsersCount
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.TotalVaccinationCount > 0)
-                        {
-                            <td> 
-                                @ViewBag.TotalVaccinationCount 
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.UserCountWithPendingApproval > 0)
-                        {
-                            <td> @ViewBag.UserCountWithPendingApproval </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                        @if(ViewBag.UsersCountWithNoBooking > 0)
-                        {
-                            <td> 
-                                @ViewBag.UsersCountWithNoBooking 
-                            </td>
-                        }
-                        else
-                        {
-                            <td> 0 </td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
+        @* portal status *@
+        <div class="col col-lg-6 col-md-4 col-sm-12">
+            <h3 style="color: gray;">Portal Stats</h3>
+
+            <div style="width: 400px; height: 250px;">
+                <canvas id="myDoughnutChart" style="height: 100%; width: 100%;"></canvas>
+            </div>
+
+            <h5><span style="color: gray;">Total Users:</span> <b> @ViewBag.TotalUsersCount </b></h5>
         </div>
-    </div>
 
-    @* registered users without slots *@
-    
-    <div class="row mt-3">
-        <h3 style="color: gray;">Registered Users: Without Slots</h3>
+        @* registered users without slots *@
+        <div class="col col-lg-6 col-md-4 col-sm-12">
+            
+            @* head *@
+            <h3 style="color: gray;">Registered Users: Yet To Book Slots</h3>
 
-        <div class="col col-6">
-            <table class="table table-hover"">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var rec in ViewBag.UserListWithoutSlot)
-                    {
+            @* table *@
+            <div style="overflow-y:auto;">
+                <table class="table table-info table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>@rec.Username</td>
-                            <td>@rec.Name</td>
+                            <th>Name</th>
+                            <th>Username</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach(var rec in ViewBag.UserListWithoutSlot)
+                        {
+                            <tr>
+                                <td>@rec.Name</td>
+                                <td>@rec.Username</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+
     </div>
 
-    <hr style="color: orange;">
+    <hr style="color:silver;">
 
     @* registered users with pending approvals *@
-    
-    <div class="row mt-3">
-        <h3 style="color: gray;">Registered Users: With Pending Approvals</h3>
+    <div class="row mt-5">
+
+        @* head *@
+        <h3 style="color: gray;">Registered Users: With Booking Details</h3>
+        
+        @* filter *@
         <form class="mt-4 admin-form">
             <label for="filterUserVaccinationDetails">Filter by Vaccination Status:</label>
             <select style="padding: 5px; border:10px; border: 1px solid lightgray;" id="filterUserVaccinationDetails" name="filter">
@@ -118,8 +83,9 @@
             </select>
         </form>
 
-        <div class="col mt-3">
-            <table class="table table-hover">
+        @* table *@
+        <div class="col col-lg-12 col-md-12 col-sm-12 mt-3" style="overflow-y: auto;">
+            <table style="" class="table table-dark table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -170,10 +136,15 @@
 
     </div>
 
-    @* hospital details with available slots *@
+    <hr style="color:silver;">
 
-    <div class="row mt-3">
+    @* hospital details with available slots *@
+    <div class="row mt-5">
+        
+        @* head *@
         <h3 style="color: gray">Hospial Details: With Available Slots</h3>
+        
+        @* filter *@
         <form class="mt-4 admin-form">
             <label for="filterHospitalDetails">Filter Hospital Details:</label>
             <select style="padding: 5px; border:10px; border: 1px solid lightgray;" id="filterHospitalDetails" name="filterHospital">
@@ -187,8 +158,9 @@
             </select>
         </form>
 
-        <div class="col mt-3">
-            <table class="table table-hover">
+        @* table *@
+        <div class="col mt-3" style="overflow-y: auto;">
+            <table class="table table-warning table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Hospital ID</th>
@@ -205,7 +177,7 @@
                             <td>@record.HospitalName</td>
                             <td>@record.SlotsAvailable</td>
                             <td>
-                                <input type="number" id="increaseSlots_@record.HospitalId" style="width: 60px;" />
+                                <input type="number" id="increaseSlots_@record.HospitalId" class="slot-update-input" />
                                 <button type="button" id="increaseSlots" onclick="increaseSlots(@record.HospitalId)" class="slot-update-btn">Increase</button>
                             </td>
                         </tr>
@@ -222,14 +194,14 @@
 
 
 
-@section Scripts 
+@section Scripts
 {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+
     <script>
-        
+
         $(document).ready(function() {
-    
+
             @* method: filter user vaccination details table *@
             $('#filterUserVaccinationDetails').change(function() {
                 var filterValue = $(this).val();
@@ -279,11 +251,10 @@
                 });
             });
 
-            
+
         });
 
         @* method: increase slots *@
-       // Method: increase slots
         $(document).on('click', '#increaseSlots', function() {
                 var hospitalId = "H"+$(this).attr('onclick').match(/\d+/)[0];
                 var increaseValue = $('#increaseSlots_' + hospitalId).val();
@@ -304,13 +275,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        var completedVaccination= @ViewBag.TotalVaccinationCount;
+        var approvalPending = @ViewBag.UserCountWithPendingApproval;
+        var yetToBookSlots = @ViewBag.UsersCountWithNoBooking;
+
+
         var ctx = document.getElementById('myDoughnutChart').getContext('2d');
         var myDoughnutChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: ['Completed Vaccination', 'Approval Pending', 'Yet to Book Slots'],
                 datasets: [{
-                    data: [3, 1, 3],
+                    data: [completedVaccination, approvalPending, yetToBookSlots],
                     backgroundColor: ['#36A2EB', '#FFCE56', '#FF6384'],
                     hoverBackgroundColor: ['#36A2EB', '#FFCE56', '#FF6384']
                 }]

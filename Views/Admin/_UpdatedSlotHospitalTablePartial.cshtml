@@ -7,7 +7,7 @@
         <td>@item.HospitalName</td>
         <td>@item.SlotsAvailable</td>
         <td>
-            <input type="number" id="increaseSlots_@item.HospitalId" style="width: 60px;" />
+            <input type="number" id="increaseSlots_@item.HospitalId" class="slot-update-input" />
             <button type="button" id="increaseSlots" onclick="increaseSlots(@item.HospitalId)" class="slot-update-btn">Increase</button>
         </td>
     </tr>

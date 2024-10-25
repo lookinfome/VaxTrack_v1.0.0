@@ -53,19 +53,19 @@ public class AdminController:Controller
         List<HospitalDetailsModel> _adminHospitalDetails = _adminService.FetchAdminViewHospitalDetails();
         ViewBag.HospitalDetails = _adminHospitalDetails;
 
-        // total vaccination completed count
+        // total vaccination completed count: doughnut chart
         int _totalVaccinationCount = _adminService.TotalVaccinationCompletedCount();
         ViewBag.TotalVaccinationCount = _totalVaccinationCount;
 
-        // total registered users wit no slot booked
+        // total registered users wit no slot booked: doughnut chart
         int _usersCountWithNoSlot = _adminService.UsersCountWithNoBooking();
         ViewBag.UsersCountWithNoBooking = _usersCountWithNoSlot;
         
-        // total registered users
+        // total registered users: doughnut chart
         int _totalUserCount = _adminService.TotalUserCount();
         ViewBag.TotalUsersCount = _totalUserCount;
 
-        // total registered users with pending approval
+        // total registered users with pending approval: doughnut chart
         int _userCountWithPendingApproval = _totalUserCount - (_totalVaccinationCount+_usersCountWithNoSlot);
         ViewBag.UserCountWithPendingApproval = _userCountWithPendingApproval;
 
