@@ -58,6 +58,12 @@ public class ProfileController:Controller
             // fetch booking details for username
             var _userBookingDetails = _bookingService.FetchBookingDetails(username);
 
+            // login message on success
+            ViewBag.LoginMessage = TempData["LoginMessage"];
+
+            // registration message on success
+            ViewBag.RegistrationMessage = TempData["RegistrationMessage"];
+
             // if user's and user's vaccination details exists
             if(_userDetails != null)
             {

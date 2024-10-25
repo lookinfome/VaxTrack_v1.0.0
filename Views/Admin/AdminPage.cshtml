@@ -1,5 +1,13 @@
 
 <div class="container mt-5">
+
+    @if(ViewBag.LoginMessage != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.LoginMessage
+        </div>
+    }
+
     <div class="row">
         <h1> Admin Dashboard </h1>
     </div>

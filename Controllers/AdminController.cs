@@ -73,6 +73,9 @@ public class AdminController:Controller
         List<AdminViewUserWithoutBooking> _userListWothoutSlot  = _adminService.UsersDetailsWithNoBooking();
         ViewBag.UserListWithoutSlot = _userListWothoutSlot;
 
+        // login message on success
+        ViewBag.LoginMessage = TempData["LoginMessage"];
+
         // return view
         return View();
     }

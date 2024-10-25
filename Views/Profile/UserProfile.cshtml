@@ -15,6 +15,21 @@
 }
 
 <div class="container mt-5">
+
+    @if(ViewBag.RegistrationMessage != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.RegistrationMessage
+        </div>
+    }
+
+    else if(ViewBag.LoginMessage != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.LoginMessage
+        </div>
+    }
+
     <div class="row user-detail-row">
 
         <div class="col col-lg-12 col-md-12 col-sm-12 user-detail-column">

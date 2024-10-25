@@ -59,6 +59,8 @@ public class AccountController:Controller
 
                 if (result.Succeeded)
                 {
+                    TempData["LoginMessage"] = $"Login Successfull for user - {submittedDetails.Username}";
+
                     if (_accountService.IsUserAdmin(submittedDetails.Username))
                     {
                         // Allow admin login
@@ -127,6 +129,8 @@ public class AccountController:Controller
                 if (_newUserLoginDetails.Username != null)
                 {
                     Console.WriteLine($"Registation successfull for user - {_newUserLoginDetails.Username}");
+
+                    TempData["RegistrationMessage"]=$"Registation successfull for user - {_newUserLoginDetails.Username}";
 
                     // Redirect to Login action
                     return await Login(_newUserLoginDetails);
