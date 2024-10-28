@@ -21,6 +21,20 @@ body {
   margin-bottom: 60px;
 }
 
+/* nav bar */
+.user-logout-btn{
+  background-color: sandybrown;
+  border: 1px solid sandybrown;
+  border-radius: 10px;
+  margin-top: 5px;
+  transition: 0.5s ease-in-out;
+}
+
+.user-logout-btn:hover{
+  background-color: tomato;
+  border: 1px solid tomato;
+}
+
 /* home page */
 
 .carousel-inner{
@@ -38,10 +52,20 @@ body {
 
 .home-page-login-btn{
   background-color: yellow;
+  transition: 0.5s ease-in-out;
+}
+
+.home-page-login-btn:hover{
+  background-color: limegreen;
 }
 
 .home-page-registration-btn{
   background-color: skyblue;
+  transition: 0.5s ease-in-out;
+}
+
+.home-page-registration-btn:hover{
+  background-color:steelblue;
 }
 
 .home-page-login-btn, .home-page-registration-btn{
@@ -130,13 +154,11 @@ body {
 }
 
 
-
 /* admin page */
 .admin-portal-stats th, .admin-portal-stats td{
   border: 1px solid black;
   padding: 10px;
 }
-
 
 .slot-update-btn{
   background-color:skyblue;
