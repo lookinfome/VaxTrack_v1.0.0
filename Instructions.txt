@@ -1,0 +1,31 @@
+requirements completed
+----------------------
+1.      Create a login page for vaccine registration - done
+2.      Create a registration page with validation by adding required fields - done
+3.      Home page about vaccine - done
+4.      Booking vaccination page – To book the Dose 1 and Dose 2 for registered users - done
+5.      Version control using GitHub - done
+6.      Admin login page for Hospital to update the number of vaccines available and also to approve registered users for vaccine
+                update user model - add admin role - done
+                update account controller - link admin page based on role - done
+8.      registration page - add validation on input: phone - done
+9.      registration page - add input: confirm password - done
+10.     registration page - add logic: password strength & logic: confirm password - done
+14.     home page - add UI - done
+15.     user profile page - add UI - done
+11.     slot booking page - add validation logic: dose 2 date - done
+12.     admin page - add increment button to add slots of listed hospitals - done
+
+requirements pending
+--------------------
+
+7.      admin page - list hospitals with vaccination completion count
+13.     admin page - add graphs
+
+
+
+technical tasks pending
+-----------------------
+1.      add log out functionality - done
+2.      add authentication and authorization - done
+3.      add asynchronization
