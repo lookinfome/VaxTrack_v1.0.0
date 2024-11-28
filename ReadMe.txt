@@ -9,7 +9,7 @@
     - Ensuring secure and accurate tracking of vaccination statuses.
 
 
-##Case Study: Streamlining COVID-19 Vaccination with ASP.NET MVC
+##Case Study: Streamlining COVID-19 Vaccination process and workflow
 
 ###Overview
 - The COVID-19 pandemic underscored the necessity for efficient and accessible vaccination systems. In response, we developed a web-based application using the ASP.NET MVC framework to streamline the vaccination process. This application serves as a user-friendly portal for both general users and administrators, aiming to simplify the booking and management of COVID-19 vaccination slots.
